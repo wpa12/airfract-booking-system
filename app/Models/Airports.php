@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Database\Factories\AirportsFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class School extends Model
+class Airports extends Model
 {
-    /** @use HasFactory<\Database\Factories\SchoolFactory> */
+    /** @use HasFactory<AirportsFactory> */
     use HasFactory;
 }
