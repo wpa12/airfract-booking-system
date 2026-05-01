@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Aircraft;
 use Illuminate\Database\Seeder;
 
-class SchoolSeeder extends Seeder
+class AircraftSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        //
+        Aircraft::factory()->count(50)->create();
     }
 }

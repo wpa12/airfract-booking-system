@@ -14,8 +14,8 @@ use Illuminate\Database\Eloquent\Model;
     'description',
     'registration',
     'rental_price_per_hour',
-    'fuel_type',
-    'school_id',
+    'fuel_type_id',
+    'flight_school_id',
     'in_service',
     'current_hours',
 ])]

@@ -21,7 +21,6 @@ class AddressFactory extends Factory
             'address_line_1' => fake()->streetAddress(),
             'address_line_2' => fake()->secondaryAddress(),
             'city' => fake()->city(),
-            'county' => fake()->county(),
             'postcode' => fake()->postcode(),
             'country' => 'United Kingdom',
         ];

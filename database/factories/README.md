@@ -1,6 +1,6 @@
 # Factories
 
-This README is relating to the factories. I've included a number of them which include the following:
+This README is relating to the factories. There are a number of them which are listed below.
 
 - [AddressFactory](#address-factory-model-address)
 - [AircraftFactory](#aircraftfactory-model-aircraft)
@@ -8,8 +8,6 @@ This README is relating to the factories. I've included a number of them which i
 - [EngineFactory](#)
 - [FlightSchoolFactory](#flightschoolfactory-model-flightschool)
 - [FuelTypeFactory]()
-<!-- - PilotCredentialFactory -->
-<!-- - TechLogFactory -->
 - UserFactory (standard with Laravel)
 
 ## Address Factory (*Model*: [Address](../../app/Models/Address.php))
@@ -53,27 +51,40 @@ In aviation airports publish their landing fee (the cost every time the wheels t
 ### Methods:
 
 ```php
-private function getAirports(): array
+public static function ukAirportCatalog(): array
 ```
-This method simply returns an array of airport data with their associated ICAO code (Internation Civil Aviation Organisation code) this is merely a code that is used by pilots and aircraft systems to identify the airport.
+This method simply returns an array of airport data within the UK with their associated ICAO code (Internation Civil Aviation Organisation code) this is merely a code that is used by pilots and aircraft systems to identify the airport.
 
 The method is called in the `definition()` method and broken apart to fill the data for the factory.
 
+It is also called in the [AirportSeeder](../seeders/AirportSeeder.php) and looped through so that all airports in the list are seeded into the database.
+
 In addition when an airport is created the AddressFactory is run to create a new address and populate the `fK_address_id` field.
 
-## EngineFactory (*Model*: [EngineType](../../app/Models/EngineType.php))
+## EngineTypeFactory (*Model*: [EngineType](../../app/Models/EngineType.php))
 
-The [EngineFactory](./EngineTypesFactory.php) is simply used to seed the engine type data (single, multi, jet, twinjet, turboprop, twinturboprop)
+The [EngineFactory](./EngineTypeFactory.php) is simply used to seed the engine type data (single, multi, jet, twinjet, turboprop, twinturboprop)
+
+### Methods:
+
+```php
+public static function engineTypeCatalog(): array
+```
+The above is used to seed the engine types, matching each engine type to it's correct fuel type.
 
 ## FlightSchoolFactory (*Model*: [FlightSchool](../../app/Models/FlightSchool.php))
 
-This factory merely creates a Flight School in the database.
+The [FlightSchoolFactory](../factories/FlightSchoolFactory.php) merely creates a Flight School in the database.
 
 ## FuelTypeFactory (*Model*: [FuelType](../../app/Models/FuelType.php))
+
+The [FuelTypeFactory](../factories/FuelTypeFactory.php) is used to seed two different types of fuel in within the Aviation industry.
+
+### Methods:
 
 The following method returns and array of fuel types which is called in the `definition()` method and used to populate the fuel types at an airport.
 
 ```php
-private function getFuelTypes(): array
+public static function fuelTypeCatalog(): array
 ```
-
+This method is called in the seeder when seeding data.

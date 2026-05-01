@@ -13,5 +13,6 @@ class EngineType extends Model
     protected $fillable = [
         'type',
         'description',
+        'fuel_type_id',
     ];
 }

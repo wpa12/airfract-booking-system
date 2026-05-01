@@ -17,7 +17,8 @@ return new class extends Migration
             $table->text('description')->nullable(); // description of the airport
             $table->string('icao_code')->unique(); // ICAO Code for airport
             $table->decimal('landing_fee')->default(0); // landing fee at the airport
-            $table->decimal('fuel_price')->default(0); // fuel price at the airport
+            $table->decimal('avgas_price_per_litre')->default(0); // avgas price per litre at the airport
+            $table->decimal('jetA1_price_per_litre')->default(0); // jetA1 price per litre at the airport
             $table->foreignId('address_id')->nullable()->nullOnDelete(); // if the address is accidentally deleted it won't delete the airport
             $table->timestamps();
         });

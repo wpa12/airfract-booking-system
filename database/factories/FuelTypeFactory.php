@@ -10,6 +10,20 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class FuelTypeFactory extends Factory
 {
+
+    /**
+     * Fuel types array for seeding
+     *
+     * @return array
+     */
+    public static function fuelTypeCatalog(): array
+    {
+        return [
+            'avgas' => 'Aviation gasoline',
+            'jetA1' => 'Jet A-1',
+        ];
+    }
+
     /**
      * Define the model's default state.
      *
@@ -17,25 +31,12 @@ class FuelTypeFactory extends Factory
      */
     public function definition(): array
     {
-        $fuelTypes = $this->getFuelTypes();
+        $fuelTypes = self::fuelTypeCatalog();
         $fuelType = fake()->unique()->randomElement(array_keys($fuelTypes));
 
         return [
             'type' => $fuelType,
             'description' => $fuelTypes[$fuelType],
-        ];
-    }
-
-    /**
-     * Gets the fuel types within aviation
-     *
-     * @return array
-     */
-    private function getFuelTypes(): array
-    {
-        return [
-            'avgas' => 'Aviation gasoline',
-            'jetA1' => 'Jet A-1',
         ];
     }
 }

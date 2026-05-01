@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Aircraft;
+use App\Models\EngineType;
 use App\Models\FlightSchool;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,17 +25,28 @@ class AircraftFactory extends Factory
 
         $schoolIds = FlightSchool::query()->pluck('id')->all(); // gets all the school ids
 
+        $rate = match ($type) {
+            'single' => [85, 150],
+            'multi' => [150, 200],
+            'jet' => [200, 300],
+            'twinjet' => [500, 100],
+            'turboprop' => [300, 500],
+            'twinturboprop' => [500, 1000],
+        }; // this assigns an hourly rate conducive of the type of aircraft hired.
+
+        $engineType = EngineType::query()->where('type', $type)->first()->id; // get the engine type id for the aircraft
+
         return [
             'type' => $type,
             'make' => $make,
             'model' => $model,
             'description' => fake()->sentence(), // this is just a sentence to say what the aircraft is used for etc...
             'registration' => fake()->unique()->regexify($this->generateRegistrationCodeFormat()), // this si just generating a random registration code the aircraft
-            'rental_price_per_hour' => fake()->randomFloat(2, 85, 500), // this is just a random price to say how much the aircraft is rented for per hour
-            'fuel_type' => fake()->randomElement(['avgas', 'jetA1']), // these are the two main types of fuel for aircraft
-            'school_id' => $schoolIds !== [] ? fake()->randomElement($schoolIds) : null, // ensuring that we set a random flight school on the seed for the ownership of the aircraft
+            'rental_price_per_hour' => fake()->randomFloat(2, $rate[0], $rate[1]), // this is just a random price to say how much the aircraft is rented for per hour
+            'engine_type_id' => $engineType,
+            'flight_school_id' => $schoolIds !== [] ? fake()->randomElement($schoolIds) : null, // ensuring that we set a random flight school on the seed for the ownership of the aircraft
             'in_service' => fake()->boolean(), // this is just a boolean to say if the aircraft is in service or not
-            'current_hours' => fake()->numberBetween(0, 10000), // this is just a number to say how many hours the aircraft has flown
+            'current_hours' => fake()->numberBetween(0, 20000), // this is just a number to say how many hours the aircraft has flown
         ];
     }
 
@@ -49,7 +61,7 @@ class AircraftFactory extends Factory
         $make = fake()->randomElement(array_keys($byMake)); // this is just getting a random make from the array
 
         $classifications = array_values(array_filter(
-            ['single', 'multi'],
+            ['single', 'multi', 'jet', 'twinjet', 'turboprop', 'twinturboprop'],
             fn (string $key): bool => ($byMake[$make][$key] ?? []) !== []
         ));
 
@@ -71,12 +83,12 @@ class AircraftFactory extends Factory
      */
     private function generateRegistrationCodeFormat(): string
     {
-        $rand = rand(0, 2);
+        $rand = rand(0, 100); // increases probability of uk aircraft registration codes
 
         return match ($rand) {
             0 => '[A-Z]{1,2}-[A-Z0-9]{2,5}', // this one is for european aircraft registration
             1 => 'N[0-9]{1,5}[A-Z]{0,2}', // this one is for american aircraft registration codes
-            2 => 'JA[0-9]{3,4}[A-Z]', // this one is for aircraft registred in Japan
+            default => 'G-[A-Z]{4}', // this one is for UK aircraft
         };
     }
 

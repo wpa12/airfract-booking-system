@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('type')->unique();
             $table->string('description')->nullable();
-            $table->string('fuel_type_id')
+            $table->foreignId('fuel_type_id')
                 ->nullable()
                 ->constrained('fuel_types')
                 ->nullOnDelete(); // if the fuel type is accidentally deleted it won't delete the engine type
