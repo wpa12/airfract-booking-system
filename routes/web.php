@@ -11,7 +11,7 @@ Route::get('/', function () {
 });
 
 // routes for login
-Route::post('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::get('/login', function () {
     return view('layouts.login');
 })->name('login');
