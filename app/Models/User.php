@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -27,6 +29,21 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
+    }
+
+    public function isAdmin(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->attributes['is_admin'] === 1,
+        );
+    }
+
+    public function userType(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->attributes['user_type'],
+        );
     }
 }

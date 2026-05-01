@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -13,7 +15,7 @@ class LoginRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return !Auth::check();
+        return !Auth::check(); // checks the user in not already logged in before proceeding the request
     }
 
     /**
