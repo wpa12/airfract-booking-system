@@ -1,0 +1,165 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Database\Factories;
+
+use App\Models\Aircraft;
+use App\Models\FlightSchool;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<Aircraft>
+ */
+class AircraftFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        ['make' => $make, 'type' => $type, 'model' => $model] = $this->randomMakeClassificationAndModel(); // just destructuring the array to get the make, type and model
+
+        $schoolIds = FlightSchool::query()->pluck('id')->all(); // gets all the school ids
+
+        return [
+            'type' => $type,
+            'make' => $make,
+            'model' => $model,
+            'description' => fake()->sentence(), // this is just a sentence to say what the aircraft is used for etc...
+            'registration' => fake()->unique()->regexify($this->generateRegistrationCodeFormat()), // this si just generating a random registration code the aircraft
+            'rental_price_per_hour' => fake()->randomFloat(2, 85, 500), // this is just a random price to say how much the aircraft is rented for per hour
+            'fuel_type' => fake()->randomElement(['avgas', 'jetA1']), // these are the two main types of fuel for aircraft
+            'school_id' => $schoolIds !== [] ? fake()->randomElement($schoolIds) : null, // ensuring that we set a random flight school on the seed for the ownership of the aircraft
+            'in_service' => fake()->boolean(), // this is just a boolean to say if the aircraft is in service or not
+            'current_hours' => fake()->numberBetween(0, 10000), // this is just a number to say how many hours the aircraft has flown
+        ];
+    }
+
+    /**
+     * Pick make, DB type [single, multi, jet], and model from nested structure.
+     *
+     * @return array{make: string, type: string, model: string}
+     */
+    private function randomMakeClassificationAndModel(): array
+    {
+        $byMake = $this->aircraftTypes();
+        $make = fake()->randomElement(array_keys($byMake)); // this is just getting a random make from the array
+
+        $classifications = array_values(array_filter(
+            ['single', 'multi'],
+            fn (string $key): bool => ($byMake[$make][$key] ?? []) !== []
+        ));
+
+        if ($classifications === []) {
+            return $this->randomMakeClassificationAndModel();
+        }
+
+        $type = fake()->randomElement($classifications);
+
+        return [
+            'make' => $make,
+            'type' => $type,
+            'model' => fake()->randomElement($byMake[$make][$type]),
+        ];
+    }
+
+    /**
+     * Generate a random registration code format based on random number
+     */
+    private function generateRegistrationCodeFormat(): string
+    {
+        $rand = rand(0, 2);
+
+        return match ($rand) {
+            0 => '[A-Z]{1,2}-[A-Z0-9]{2,5}', // this one is for european aircraft registration
+            1 => 'N[0-9]{1,5}[A-Z]{0,2}', // this one is for american aircraft registration codes
+            2 => 'JA[0-9]{3,4}[A-Z]', // this one is for aircraft registred in Japan
+        };
+    }
+
+    /**
+     * Aircraft models grouped by make and engine class [single, multi, jet]
+     *
+     * @return array<string, array<string, list<string>>>
+     */
+    private function aircraftTypes(): array
+    {
+        return [
+            'Cessna' => [
+                'single' => ['172 Skyhawk', '182 Skylane', '206 Stationair'],
+                'multi' => ['310', '340', '421'],
+                'jet' => [],
+                'twinjet' => ['Citation CJ3', 'Citation XLS', 'Citation X'],
+                'turboprop' => ['208 Caravan', '208B Grand Caravan EX'],
+                'twinturboprop' => ['441 Conquest II', '425 Conquest I', '408 SkyCourier'],
+            ],
+            'Piper' => [
+                'single' => ['PA-28 Cherokee', 'PA-32 Saratoga', 'PA-46 Malibu'],
+                'multi' => ['PA-34 Seneca', 'PA-44 Seminole'],
+                'jet' => [],
+                'twinjet' => [],
+                'turboprop' => ['M600/SLS', 'M500', 'M700 Fury', 'M600 SLS'],
+                'twinturboprop' => ['PA-31T Cheyenne', 'PA-42 Cheyenne III', 'PA-42-1000 Cheyenne 400LS'],
+            ],
+            'Beechcraft' => [
+                'single' => ['Bonanza G36'],
+                'multi' => ['Baron G58', 'Duchess 76'],
+                'jet' => [],
+                'twinjet' => ['Premier I', 'Hawker 400XP'],
+                'turboprop' => ['Beechcraft Denali'],
+                'twinturboprop' => [
+                    'King Air 90',
+                    'King Air 200',
+                    'King Air 260',
+                    'King Air 350',
+                    'King Air 360',
+                    'Beechcraft 1900',
+                    'Starship 2000'
+                ],
+            ],
+            'Diamond' => [
+                'single' => ['DA20 Katana', 'DA40 Diamond Star', 'DA50 RG'],
+                'multi' => ['DA42 Twin Star', 'DA62'],
+                'jet' => [],
+                'twinjet' => [],
+                'turboprop' => [],
+                'twinturboprop' => ['DA42-VI'],
+            ],
+            'Cirrus' => [
+                'single' => ['SR20', 'SR22', 'SR22T'],
+                'multi' => [],
+                'jet' => ['Vision Jet SF50', 'Vision Jet SF50i'],
+                'twinjet' => [],
+                'turboprop' => [],
+                'twinturboprop' => [],
+            ],
+            'Mooney' => [
+                'single' => ['M20J', 'M20K', 'M20V Acclaim'],
+                'multi' => [],
+                'jet' => [],
+                'twinjet' => [],
+                'turboprop' => [],
+                'twinturboprop' => [],
+            ],
+            'Grumman' => [
+                'single' => ['AA-1 Yankee', 'AA-5 Traveler', 'AA-5B Tiger'],
+                'multi' => [],
+                'jet' => [],
+                'twinjet' => ['Gulfstream III'],
+                'turboprop' => [],
+                'twinturboprop' => ['Grumman Gulfstream I'],
+            ],
+            'Robin' => [
+                'single' => ['DR400', 'DR401'],
+                'multi' => [],
+                'jet' => [],
+                'twinjet' => [],
+                'turboprop' => [],
+                'twinturboprop' => [],
+            ],
+        ];
+    }
+}
