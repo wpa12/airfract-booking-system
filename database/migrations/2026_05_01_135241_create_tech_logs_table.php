@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('tech_logs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('aircraft_id')->constrained('aircraft')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('title');
+            $table->text('description');
+            $table->string('status')->default('pending');
+            $table->string('priority')->default('low');
+            $table->string('category')->default('maintenance');
+            $table->string('subcategory')->nullable();
             $table->timestamps();
         });
     }
