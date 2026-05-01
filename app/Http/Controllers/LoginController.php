@@ -19,7 +19,7 @@ class LoginController extends Controller
         $normalisedEmail = strtolower(trim($request->input('email')));
 
         // attempts to login the user and redirects them to the dashboard if successful
-        if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $request->input('remember'))) {
+        if (Auth::attempt(['email' => $normalisedEmail, 'password' => $request->input('password')], $request->input('remember'))) {
             $request->session()->regenerate();
 
             return redirect()->intended(route('dashboard.index'));
