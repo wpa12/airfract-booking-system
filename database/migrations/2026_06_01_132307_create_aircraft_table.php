@@ -13,10 +13,15 @@ return new class extends Migration
     {
         Schema::create('aircraft', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->index();
+            $table->enum('type', ['single', 'multi', 'jet'])->default('single');
+            $table->string('make')->nullable()->index();
+            $table->string('model')->nullable();
             $table->string('description')->nullable();
             $table->string('registration')->unique();
-            $table->foreignId('school_id')->nullable()->constrained('schools')->onDelete('cascade');
+            $table->foreignId('engine_type_id')->nullable()->constrained('engine_types')->nullOnDelete();
+            $table->decimal('rental_price_per_hour')->default(0);
+            $table->enum('fuel_type', ['avgas', 'jetA1'])->default('avgas');
+            $table->foreignId('flight_school_id')->nullable()->constrained('flight_schools')->onDelete('cascade');
             $table->boolean('in_service')->default(true);
             $table->integer('current_hours')->default(0);
             $table->timestamps();

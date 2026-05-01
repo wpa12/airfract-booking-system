@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('schools', function (Blueprint $table) {
+        Schema::create('flight_schools', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
+            $table->foreignId('aiport_id')
+                ->nullable()
+                ->constrained('airports')
+                ->nullOnDelete(); // if the airport gets replaced with a block of flats then the school can still exist whilst moving airports
             $table->timestamps();
         });
     }
