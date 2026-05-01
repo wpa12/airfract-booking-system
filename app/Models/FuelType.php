@@ -7,14 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 #[Fillable([
-    'address_line_1',
-    'address_line_2',
-    'city',
-    'postcode',
-    'country',
+    'type',
+    'description',
 ])]
-class Address extends Model
+class FuelType extends Model
 {
-    /** @use HasFactory<\Database\Factories\AddressFactory> */
+    /** @use HasFactory<\Database\Factories\FuelTypeFactory> */
     use HasFactory;
 }

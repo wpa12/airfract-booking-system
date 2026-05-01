@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory<School>
  */
-class SchoolFactory extends Factory
+class FlightSchoolFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,8 @@ class SchoolFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->company(),
+            'description' => fake()->sentence(),
         ];
     }
 }

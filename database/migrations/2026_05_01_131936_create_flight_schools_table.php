@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('aircraft', function (Blueprint $table) {
+        Schema::create('flight_schools', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->index();
+            $table->string('name');
             $table->string('description')->nullable();
-            $table->string('registration')->unique();
-            $table->foreignId('school_id')->nullable()->constrained('schools')->onDelete('cascade');
-            $table->boolean('in_service')->default(true);
-            $table->integer('current_hours')->default(0);
+            $table->foreignId('aiport_id')
+                ->nullable()
+                ->constrained('airports')
+                ->nullOnDelete(); // if the airport gets replaced with a block of flats then the school can still exist whilst moving airports
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('aircraft');
+        Schema::dropIfExists('schools');
     }
 };

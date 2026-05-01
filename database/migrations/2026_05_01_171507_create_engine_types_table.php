@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('schools', function (Blueprint $table) {
+        Schema::create('engine_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('type')->unique();
             $table->string('description')->nullable();
+            $table->foreignId('fuel_type_id')
+                ->nullable()
+                ->constrained('fuel_types')
+                ->nullOnDelete(); // if the fuel type is accidentally deleted it won't delete the engine type
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('schools');
+        Schema::dropIfExists('engines');
     }
 };

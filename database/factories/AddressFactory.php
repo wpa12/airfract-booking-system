@@ -18,7 +18,11 @@ class AddressFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'address_line_1' => fake()->streetAddress(),
+            'address_line_2' => fake()->secondaryAddress(),
+            'city' => fake()->city(),
+            'postcode' => fake()->postcode(),
+            'country' => 'United Kingdom',
         ];
     }
 }
