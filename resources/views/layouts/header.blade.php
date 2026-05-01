@@ -18,7 +18,7 @@
 
         <!-- (Optional) User Actions -->
         <div class="flex gap-2 mt-4 sm:mt-0">
-            <a href="#" class="bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded px-4 py-2 transition shadow">
+            <a href="{{ route('login') }}" class="bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded px-4 py-2 transition shadow">
                 Log In
             </a>
             <a href="#" class="bg-white text-blue-900 font-semibold rounded px-4 py-2 shadow hover:bg-blue-100 transition">
