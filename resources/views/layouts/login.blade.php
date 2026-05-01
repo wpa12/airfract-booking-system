@@ -7,7 +7,7 @@
             <p class="mt-1 text-sm text-gray-600">Welcome back! Please enter your credentials.</p>
         </div>
 
-        <form method="POST" action="{{ route('login') }}" class="space-y-5">
+        <form method="POST" action="{{ route('login.post') }}" class="space-y-5">
             @csrf
             <div>
                 <label for="email" class="mb-1 block font-medium text-blue-900">Email Address</label>
@@ -19,7 +19,11 @@
                     autofocus
                     class="w-full rounded border border-blue-200 px-4 py-2 transition focus:outline-none focus:ring-2 focus:ring-blue-500"
                     placeholder="you@example.com"
+                    value="{{ old('email') }}"
                 >
+                @error('email')
+                    <p class="text-red-500 text-sm">{{ $message }}</p>
+                @enderror
             </div>
 
             <div>

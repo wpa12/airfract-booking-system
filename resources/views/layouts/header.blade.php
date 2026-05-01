@@ -18,9 +18,18 @@
 
         <!-- (Optional) User Actions -->
         <div class="flex gap-2 mt-4 sm:mt-0">
-            <a href="{{ route('login') }}" class="bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded px-4 py-2 transition shadow">
-                Log In
-            </a>
+            @if (Auth::check())
+                <form method="POST" action="{{ route('logout') }}" class="inline-block">
+                    @csrf
+                    <button type="submit" class="bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded px-4 py-2 transition shadow">
+                        Log Out
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="bg-blue-700 hover:bg-blue-600 text-white font-semibold rounded px-4 py-2 transition shadow">
+                    Log In
+                </a>
+            @endif
             <a href="#" class="bg-white text-blue-900 font-semibold rounded px-4 py-2 shadow hover:bg-blue-100 transition">
                 Sign Up
             </a>
