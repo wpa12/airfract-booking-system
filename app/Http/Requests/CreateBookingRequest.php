@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\BookingStatuses;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Enums\BookingStatuses;
 use Illuminate\Support\Facades\Auth;
+
+// use App\Enums\BookableTypes;
 
 class CreateBookingRequest extends FormRequest
 {
@@ -25,12 +27,11 @@ class CreateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'aircraft_id' => 'required|exists:aircraft,id',
             'user_id' => 'required|exists:users,id',
             'flight_school_id' => 'required|exists:flight_schools,id',
-            'booking_date_time_out' => 'required|datetime',
-            'booking_date_time_in' => 'required|datetime',
-            'booking_status' => 'required|string|in:' . implode(',', array_column(BookingStatuses::cases(), 'value')),
+            'booking_date_time_start' => 'required|date_format:Y-m-d H:i:s',
+            'booking_date_time_end' => 'required|date_format:Y-m-d H:i:s',
+            'booking_status' => 'required|string|in:'.implode(',', array_column(BookingStatuses::cases(), 'value')),
         ];
     }
 }

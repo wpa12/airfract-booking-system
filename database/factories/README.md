@@ -5,7 +5,8 @@ This README is relating to the factories. There are a number of them which are l
 - [AddressFactory](#address-factory-model-address)
 - [AircraftFactory](#aircraftfactory-model-aircraft)
 - [AirportFactory](#airportfactory-modelairport)
-- [EngineFactory](#)
+- [BookingFactory](#bookingfactory-model-booking)
+- [EngineTypeFactory](#enginetypefactory-model-enginetype)
 - [FlightSchoolFactory](#flightschoolfactory-model-flightschool)
 - [FuelTypeFactory]()
 - UserFactory (standard with Laravel)
@@ -45,7 +46,7 @@ This method is called in the `definition()` method and deconstructed for use in 
 
 ## AirportFactory (*Model*: [Airport](../../app/Models/Airports.php))
 
-The [AirportFactory](./AirportsFactory.php) seeds some basic airport data.
+The [AirportFactory](./AirportsFactory.php) creates some basic airport data.
 In aviation airports publish their landing fee (the cost every time the wheels touch the runway) which is crucial for pilots to know if they're practicing take-offs and landings. In addition they also publish their fuel costs.
 
 ### Methods:
@@ -61,16 +62,28 @@ It is also called in the [AirportSeeder](../seeders/AirportSeeder.php) and loope
 
 In addition when an airport is created the AddressFactory is run to create a new address and populate the `fK_address_id` field.
 
+## BookingFactory (*Model*: [Booking](../../app/Models/Booking.php))
+
+The [BookingFactory](./BookingFactory.php) is used to create a book
+
+### Methods:
+
+The following static method is called in the BookingSeeder to seed some bookings with those that are a BookableContract type
+
+```php
+public static function bookableTypes(): array
+```
+
 ## EngineTypeFactory (*Model*: [EngineType](../../app/Models/EngineType.php))
 
-The [EngineFactory](./EngineTypeFactory.php) is simply used to seed the engine type data (single, multi, jet, twinjet, turboprop, twinturboprop)
+The [EngineFactory](./EngineTypeFactory.php) is simply used to create the engine type data (single, multi, jet, twinjet, turboprop, twinturboprop)
 
 ### Methods:
 
 ```php
 public static function engineTypeCatalog(): array
 ```
-The above is used to seed the engine types, matching each engine type to it's correct fuel type.
+The above is used to create the engine types, matching each engine type to it's correct fuel type.
 
 ## FlightSchoolFactory (*Model*: [FlightSchool](../../app/Models/FlightSchool.php))
 
@@ -78,7 +91,7 @@ The [FlightSchoolFactory](../factories/FlightSchoolFactory.php) merely creates a
 
 ## FuelTypeFactory (*Model*: [FuelType](../../app/Models/FuelType.php))
 
-The [FuelTypeFactory](../factories/FuelTypeFactory.php) is used to seed two different types of fuel in within the Aviation industry.
+The [FuelTypeFactory](../factories/FuelTypeFactory.php) is used to create two different types of fuel in within the Aviation industry.
 
 ### Methods:
 
@@ -87,4 +100,4 @@ The following method returns and array of fuel types which is called in the `def
 ```php
 public static function fuelTypeCatalog(): array
 ```
-This method is called in the seeder when seeding data.
+This method is called in the [FuelTypeSeeder](../seeders/FuelTypeSeeder.php) when seeding engine type data.

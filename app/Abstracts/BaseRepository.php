@@ -7,17 +7,13 @@ namespace App\Abstracts;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
-abstract class Repository
+abstract class BaseRepository
 {
     /* This repository uses constructor promotion to inject the model into the repository so that the repository can be used in the service */
-    public function __construct(protected Model $model)
-    {}
+    public function __construct(protected Model $model) {}
 
     /**
      * Creates a new record in the database
-     *
-     * @param array $data
-     * @return Model
      */
     public function create(array $data): Model
     {
@@ -26,9 +22,6 @@ abstract class Repository
 
     /**
      * Updates a record in the database
-     *
-     * @param array $data
-     * @return Model
      */
     public function update(array $data): Model
     {
@@ -39,9 +32,6 @@ abstract class Repository
 
     /**
      * Deletes a record from the database
-     *
-     * @param integer $id
-     * @return boolean
      */
     public function delete(int $id): bool
     {

@@ -8,15 +8,13 @@
             </span>
         </a>
 
-        <!-- Navigation -->
         <nav class="flex gap-6">
-            <a href="#" class="text-lg font-medium hover:text-blue-300 transition">Home</a>
-            <a href="#" class="text-lg font-medium hover:text-blue-300 transition">Bookings</a>
-            <a href="#" class="text-lg font-medium hover:text-blue-300 transition">About</a>
-            <a href="#" class="text-lg font-medium hover:text-blue-300 transition">Contact</a>
+            <a href="{{ route('dashboard.index') }}" class="text-lg font-medium hover:text-blue-300 transition">Home</a>
+            @auth
+            <a href="{{ route('dashboard.bookings.index') }}" class="text-lg font-medium hover:text-blue-300 transition">Bookings</a>
+            @endauth
+            <a href="/about" class="text-lg font-medium hover:text-blue-300 transition">About</a>
         </nav>
-
-        <!-- (Optional) User Actions -->
         <div class="flex gap-2 mt-4 sm:mt-0">
             @if (Auth::check())
                 <form method="POST" action="{{ route('logout') }}" class="inline-block">

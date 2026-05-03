@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use Database\Factories\FuelTypeFactory;
 use App\Models\FuelType;
+use Database\Factories\FuelTypeFactory;
+use Illuminate\Database\Seeder;
 
 class FuelTypeSeeder extends Seeder
 {
