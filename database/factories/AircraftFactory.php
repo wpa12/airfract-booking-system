@@ -23,7 +23,7 @@ class AircraftFactory extends Factory
     {
         ['make' => $make, 'type' => $type, 'model' => $model] = $this->randomMakeClassificationAndModel(); // just destructuring the array to get the make, type and model
 
-        $schoolIds = FlightSchool::query()->pluck('id')->all(); // gets all the school ids
+        $flightSchoolIds = FlightSchool::query()->pluck('id')->all(); // gets all the school ids
 
         $rate = match ($type) {
             'single' => [85, 150],
@@ -44,7 +44,7 @@ class AircraftFactory extends Factory
             'registration' => fake()->unique()->regexify($this->generateRegistrationCodeFormat()), // this si just generating a random registration code the aircraft
             'rental_price_per_hour' => fake()->randomFloat(2, $rate[0], $rate[1]), // this is just a random price to say how much the aircraft is rented for per hour
             'engine_type_id' => $engineType,
-            'flight_school_id' => $schoolIds !== [] ? fake()->randomElement($schoolIds) : null, // ensuring that we set a random flight school on the seed for the ownership of the aircraft
+            'flight_school_id' => fake()->randomElement($flightSchoolIds), // ensuring that we set a random flight school on the seed for the ownership of the aircraft
             'in_service' => fake()->boolean(), // this is just a boolean to say if the aircraft is in service or not
             'current_hours' => fake()->numberBetween(0, 20000), // this is just a number to say how many hours the aircraft has flown
         ];

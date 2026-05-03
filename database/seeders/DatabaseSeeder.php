@@ -5,6 +5,12 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\AddressSeeder;
+use Database\Seeders\AirportSeeder;
+use Database\Seeders\FuelTypeSeeder;
+use Database\Seeders\EngineTypeSeeder;
+use Database\Seeders\AircraftSeeder;
+use Database\Seeders\FlightSchoolSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,11 +21,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
+            'is_admin' => true,
         ]);
 
         $this->call([
@@ -27,8 +34,9 @@ class DatabaseSeeder extends Seeder
             AirportSeeder::class,
             FuelTypeSeeder::class,
             EngineTypeSeeder::class,
-            AircraftSeeder::class,
             FlightSchoolSeeder::class,
+            AircraftSeeder::class,
+            BookingSeeder::class,
         ]);
     }
 }
