@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Database\Factories\AircraftFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Contracts\BookableContract;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 #[Fillable([
     'type',
@@ -19,8 +23,14 @@ use Illuminate\Database\Eloquent\Model;
     'in_service',
     'current_hours',
 ])]
-class Aircraft extends Model
+class Aircraft extends Model implements BookableContract
 {
     /** @use HasFactory<AircraftFactory> */
     use HasFactory;
+
+
+    public function bookings(): MorphMany
+    {
+        return $this->morphMany(Booking::class, 'bookable');
+    }
 }
